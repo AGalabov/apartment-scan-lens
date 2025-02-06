@@ -3,6 +3,7 @@ export interface Listing {
   title: string;
   url: string;
   tags: string[];
+  imageUrl?: string;
 }
 
 export interface ListingsState {
