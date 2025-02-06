@@ -28,16 +28,6 @@ const Index = () => {
     saveListings({ offers: updatedListings });
   };
 
-  const handleDeleteListing = (id: string) => {
-    const updatedListings = listings.filter(listing => listing.id !== id);
-    setListings(updatedListings);
-    saveListings({ offers: updatedListings });
-    toast({
-      title: "Listing deleted",
-      description: "The listing has been removed successfully",
-    });
-  };
-
   const allTags = Array.from(
     new Set(listings.flatMap((listing) => listing.tags))
   );
@@ -141,11 +131,7 @@ const Index = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredListings.map((listing) => (
-          <ApartmentCard 
-            key={listing.id} 
-            listing={listing} 
-            onDelete={handleDeleteListing}
-          />
+          <ApartmentCard key={listing.id} listing={listing} />
         ))}
       </div>
     </div>
