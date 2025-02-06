@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
-import { loadListings } from "../utils/storage";
+import { Input } from "@/components/ui/input";
+import { ChevronLeft, Edit2, Save } from "lucide-react";
+import { loadListings, saveListings } from "../utils/storage";
+import { TagInput } from "../components/TagInput";
+import { useToast } from "@/components/ui/use-toast";
 
 const ListingView = () => {
   const { id } = useParams();
-  const listing = loadListings().offers.find((l) => l.id === id);
+  const { toast } = useToast();
+  const listings = loadListings().offers;
+  const listing = listings.find((l) => l.id === id);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(listing?.title || "");
+  const [editedTags, setEditedTags] = useState(listing?.tags || []);
 
   if (!listing) {
     return (
@@ -23,6 +31,24 @@ const ListingView = () => {
     );
   }
 
+  const handleSave = () => {
+    const updatedListings = listings.map((l) =>
+      l.id === id
+        ? {
+            ...l,
+            title: editedTitle,
+            tags: editedTags,
+          }
+        : l
+    );
+    saveListings({ offers: updatedListings });
+    setIsEditing(false);
+    toast({
+      title: "Changes saved",
+      description: "Your changes have been saved successfully",
+    });
+  };
+
   return (
     <div className="p-4 space-y-4">
       <div className="flex items-center justify-between">
@@ -32,17 +58,52 @@ const ListingView = () => {
             Back to listings
           </Button>
         </Link>
-        <div className="flex gap-2">
-          {listing.tags.map((tag) => (
-            <Badge key={tag} variant="secondary">
-              {tag}
-            </Badge>
-          ))}
-        </div>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => {
+            if (isEditing) {
+              handleSave();
+            } else {
+              setIsEditing(true);
+            }
+          }}
+        >
+          {isEditing ? (
+            <Save className="h-4 w-4" />
+          ) : (
+            <Edit2 className="h-4 w-4" />
+          )}
+        </Button>
       </div>
+
+      <div className="space-y-4">
+        {isEditing ? (
+          <>
+            <Input
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              className="text-xl font-bold"
+            />
+            <TagInput tags={editedTags} onTagsChange={setEditedTags} />
+          </>
+        ) : (
+          <>
+            <h1 className="text-xl font-bold">{listing.title}</h1>
+            <div className="flex gap-2">
+              {listing.tags.map((tag) => (
+                <Badge key={tag} variant="secondary">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
       <iframe
         src={listing.url}
-        className="w-full h-[calc(100vh-120px)] border rounded-lg"
+        className="w-full h-[calc(100vh-200px)] border rounded-lg"
         title={listing.title}
       />
     </div>
