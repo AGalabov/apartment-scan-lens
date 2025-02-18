@@ -23,9 +23,9 @@ export const TraitSelect: React.FC<TraitSelectProps> = ({
     <div className="flex items-center gap-2">
       <span className="min-w-32">{trait}</span>
       <Select
-        value={value?.toString() || ""}
+        value={value?.toString() || "unknown"}
         onValueChange={(val) => {
-          if (val === "") onChange(null);
+          if (val === "unknown") onChange(null);
           else onChange(val as "YES" | "NO");
         }}
       >
@@ -33,7 +33,7 @@ export const TraitSelect: React.FC<TraitSelectProps> = ({
           <SelectValue placeholder="Unknown" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">Unknown</SelectItem>
+          <SelectItem value="unknown">Unknown</SelectItem>
           <SelectItem value="YES">Yes</SelectItem>
           <SelectItem value="NO">No</SelectItem>
         </SelectContent>
