@@ -8,6 +8,7 @@ import { ChevronLeft, Edit2, Save } from "lucide-react";
 import { loadListings, saveListings } from "../utils/storage";
 import { TagInput } from "../components/TagInput";
 import { useToast } from "@/components/ui/use-toast";
+import { TraitSelect } from "../components/TraitSelect";
 
 const ListingView = () => {
   const { id } = useParams();
@@ -17,6 +18,7 @@ const ListingView = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(listing?.title || "");
   const [editedTags, setEditedTags] = useState(listing?.tags || []);
+  const [editedTraits, setEditedTraits] = useState(listing?.traits || {});
 
   if (!listing) {
     return (
@@ -39,6 +41,7 @@ const ListingView = () => {
             ...l,
             title: editedTitle,
             tags: editedTags,
+            traits: editedTraits,
           }
         : l
     );
@@ -90,17 +93,51 @@ const ListingView = () => {
               className="text-xl font-bold"
             />
             <TagInput tags={editedTags} onTagsChange={setEditedTags} />
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Traits</h3>
+              <div className="grid gap-4">
+                {listingsState.traits.map((trait) => (
+                  <TraitSelect
+                    key={trait}
+                    trait={trait}
+                    value={editedTraits[trait] || null}
+                    onChange={(value) =>
+                      setEditedTraits((prev) => ({ ...prev, [trait]: value }))
+                    }
+                  />
+                ))}
+              </div>
+            </div>
           </>
         ) : (
           <>
             <h1 className="text-xl font-bold">{listing.title}</h1>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {listing.tags.map((tag) => (
                 <Badge key={tag} variant="secondary">
                   {tag}
                 </Badge>
               ))}
             </div>
+            {listing.traits && Object.entries(listing.traits).length > 0 && (
+              <div className="space-y-2">
+                <h3 className="text-lg font-medium">Traits</h3>
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(listing.traits).map(([trait, value]) => {
+                    if (value === null) return null;
+                    return (
+                      <Badge
+                        key={trait}
+                        variant="outline"
+                        className={value === "YES" ? "text-green-600" : "text-red-600"}
+                      >
+                        {trait}: {value === "YES" ? "Yes" : "No"}
+                      </Badge>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>

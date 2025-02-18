@@ -31,8 +31,12 @@ export const AddListingModal: React.FC<AddListingModalProps> = ({ onAdd }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [traits, setTraits] = useState<Record<string, "YES" | "NO" | null>>({});
   const [newTrait, setNewTrait] = useState("");
+  const [availableTraits, setAvailableTraits] = useState<string[]>([]);
 
-  const { traits: availableTraits } = loadListings();
+  useEffect(() => {
+    const { traits: loadedTraits } = loadListings();
+    setAvailableTraits(loadedTraits);
+  }, [open]); // Refresh when modal opens
 
   const fetchUrlMetadata = async (url: string) => {
     if (!url) return;
@@ -85,6 +89,7 @@ export const AddListingModal: React.FC<AddListingModalProps> = ({ onAdd }) => {
 
   const addNewTrait = () => {
     if (newTrait.trim() && !availableTraits.includes(newTrait.trim())) {
+      setAvailableTraits((prev) => [...prev, newTrait.trim()]);
       setTraits((current) => ({ ...current, [newTrait]: null }));
       setNewTrait("");
     }
