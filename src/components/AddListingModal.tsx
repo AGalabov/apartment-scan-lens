@@ -98,64 +98,66 @@ export const AddListingModal: React.FC<AddListingModalProps> = ({ onAdd }) => {
           Add Listing
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="w-full max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add New Listing</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Input
-              placeholder="URL"
-              type="url"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              required
-              disabled={isLoading}
-            />
-          </div>
-          <div className="space-y-2">
-            <Input
-              placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-              disabled={isLoading}
-            />
-          </div>
-          {imageUrl && (
-            <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
-              <img
-                src={imageUrl}
-                alt="Preview"
-                className="object-cover w-full h-full"
-              />
-            </div>
-          )}
-          <TagInput tags={tags} onTagsChange={setTags} />
-          
-          <div className="space-y-2">
-            <h3 className="font-medium">Traits</h3>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-4">
             <div className="space-y-2">
-              {availableTraits.map((trait) => (
-                <TraitSelect
-                  key={trait}
-                  trait={trait}
-                  value={traits[trait] || null}
-                  onChange={(value) =>
-                    setTraits((prev) => ({ ...prev, [trait]: value }))
-                  }
-                />
-              ))}
-            </div>
-            <div className="flex gap-2">
               <Input
-                placeholder="New trait"
-                value={newTrait}
-                onChange={(e) => setNewTrait(e.target.value)}
+                placeholder="URL"
+                type="url"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                required
+                disabled={isLoading}
               />
-              <Button type="button" onClick={addNewTrait}>
-                Add Trait
-              </Button>
+            </div>
+            <div className="space-y-2">
+              <Input
+                placeholder="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                disabled={isLoading}
+              />
+            </div>
+            {imageUrl && (
+              <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
+                <img
+                  src={imageUrl}
+                  alt="Preview"
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            )}
+            <TagInput tags={tags} onTagsChange={setTags} />
+            
+            <div className="space-y-4">
+              <h3 className="font-medium text-lg">Traits</h3>
+              <div className="grid gap-4">
+                {availableTraits.map((trait) => (
+                  <TraitSelect
+                    key={trait}
+                    trait={trait}
+                    value={traits[trait] || null}
+                    onChange={(value) =>
+                      setTraits((prev) => ({ ...prev, [trait]: value }))
+                    }
+                  />
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <Input
+                  placeholder="New trait"
+                  value={newTrait}
+                  onChange={(e) => setNewTrait(e.target.value)}
+                />
+                <Button type="button" onClick={addNewTrait}>
+                  Add Trait
+                </Button>
+              </div>
             </div>
           </div>
           

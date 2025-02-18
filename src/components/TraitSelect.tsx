@@ -1,12 +1,5 @@
 
 import React from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 interface TraitSelectProps {
   trait: string;
@@ -22,22 +15,41 @@ export const TraitSelect: React.FC<TraitSelectProps> = ({
   return (
     <div className="flex items-center gap-2">
       <span className="min-w-32">{trait}</span>
-      <Select
-        value={value?.toString() || "unknown"}
-        onValueChange={(val) => {
-          if (val === "unknown") onChange(null);
-          else onChange(val as "YES" | "NO");
-        }}
-      >
-        <SelectTrigger className="w-24">
-          <SelectValue placeholder="Unknown" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="unknown">Unknown</SelectItem>
-          <SelectItem value="YES">Yes</SelectItem>
-          <SelectItem value="NO">No</SelectItem>
-        </SelectContent>
-      </Select>
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => onChange(value === "YES" ? null : "YES")}
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+            value === "YES"
+              ? "bg-green-500 text-white"
+              : "bg-green-100 text-green-700 hover:bg-green-200"
+          }`}
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          onClick={() => onChange(value === "NO" ? null : "NO")}
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+            value === "NO"
+              ? "bg-red-500 text-white"
+              : "bg-red-100 text-red-700 hover:bg-red-200"
+          }`}
+        >
+          No
+        </button>
+        <button
+          type="button"
+          onClick={() => onChange(null)}
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+            value === null
+              ? "bg-gray-500 text-white"
+              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+          }`}
+        >
+          Unknown
+        </button>
+      </div>
     </div>
   );
 };
