@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
@@ -11,8 +12,8 @@ import { useToast } from "@/components/ui/use-toast";
 const ListingView = () => {
   const { id } = useParams();
   const { toast } = useToast();
-  const listings = loadListings().offers;
-  const listing = listings.find((l) => l.id === id);
+  const listingsState = loadListings();
+  const listing = listingsState.offers.find((l) => l.id === id);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(listing?.title || "");
   const [editedTags, setEditedTags] = useState(listing?.tags || []);
@@ -32,7 +33,7 @@ const ListingView = () => {
   }
 
   const handleSave = () => {
-    const updatedListings = listings.map((l) =>
+    const updatedListings = listingsState.offers.map((l) =>
       l.id === id
         ? {
             ...l,
@@ -41,7 +42,10 @@ const ListingView = () => {
           }
         : l
     );
-    saveListings({ offers: updatedListings });
+    saveListings({ 
+      offers: updatedListings,
+      traits: listingsState.traits
+    });
     setIsEditing(false);
     toast({
       title: "Changes saved",
