@@ -1,9 +1,10 @@
+
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Trash2 } from "lucide-react";
+import { Trash2, Check, X } from "lucide-react";
 import { Listing } from "../types/types";
 
 interface ApartmentCardProps {
@@ -13,7 +14,7 @@ interface ApartmentCardProps {
 
 export const ApartmentCard: React.FC<ApartmentCardProps> = ({ listing, onDelete }) => {
   const handleDelete = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent navigation when clicking delete
+    e.preventDefault();
     onDelete(listing.id);
   };
 
@@ -48,6 +49,29 @@ export const ApartmentCard: React.FC<ApartmentCardProps> = ({ listing, onDelete 
               </Badge>
             ))}
           </div>
+          {listing.traits && Object.entries(listing.traits).length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {Object.entries(listing.traits).map(([trait, value]) => {
+                if (value === null) return null;
+                return (
+                  <Badge
+                    key={trait}
+                    variant="outline"
+                    className={`flex items-center gap-1 ${
+                      value === "YES" ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    {trait}
+                    {value === "YES" ? (
+                      <Check className="h-3 w-3" />
+                    ) : (
+                      <X className="h-3 w-3" />
+                    )}
+                  </Badge>
+                );
+              })}
+            </div>
+          )}
         </CardHeader>
       </Card>
     </Link>
