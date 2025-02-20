@@ -173,7 +173,7 @@ const Index = () => {
                   Filter listings by tags and traits
                 </SheetDescription>
               </SheetHeader>
-              <div className="mt-4 space-y-4">
+              <div className="mt-4 space-y-4 overflow-y-auto h-[calc(100vh-200px)] pr-2">
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium">Tags</h3>
                   <div className="flex flex-wrap gap-2">

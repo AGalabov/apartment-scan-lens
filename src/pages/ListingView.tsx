@@ -19,6 +19,7 @@ const ListingView = () => {
   const [editedTitle, setEditedTitle] = useState(listing?.title || "");
   const [editedTags, setEditedTags] = useState(listing?.tags || []);
   const [editedTraits, setEditedTraits] = useState(listing?.traits || {});
+  const [newTrait, setNewTrait] = useState("");
 
   if (!listing) {
     return (
@@ -54,6 +55,25 @@ const ListingView = () => {
       title: "Changes saved",
       description: "Your changes have been saved successfully",
     });
+  };
+
+  const addNewTrait = () => {
+    if (newTrait.trim() && !listingsState.traits.includes(newTrait.trim())) {
+      const updatedTraits = [...listingsState.traits, newTrait.trim()];
+      saveListings({
+        offers: listingsState.offers,
+        traits: updatedTraits,
+      });
+      setEditedTraits((current) => ({ ...current, [newTrait]: null }));
+      setNewTrait("");
+    }
+  };
+
+  const handleNewTraitKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addNewTrait();
+    }
   };
 
   return (
@@ -106,6 +126,17 @@ const ListingView = () => {
                     }
                   />
                 ))}
+              </div>
+              <div className="flex gap-2">
+                <Input
+                  placeholder="New trait"
+                  value={newTrait}
+                  onChange={(e) => setNewTrait(e.target.value)}
+                  onKeyDown={handleNewTraitKeyPress}
+                />
+                <Button type="button" onClick={addNewTrait}>
+                  Add Trait
+                </Button>
               </div>
             </div>
           </>

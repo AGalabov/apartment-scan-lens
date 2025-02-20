@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -95,6 +94,13 @@ export const AddListingModal: React.FC<AddListingModalProps> = ({ onAdd }) => {
     }
   };
 
+  const handleNewTraitKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addNewTrait();
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -158,6 +164,7 @@ export const AddListingModal: React.FC<AddListingModalProps> = ({ onAdd }) => {
                   placeholder="New trait"
                   value={newTrait}
                   onChange={(e) => setNewTrait(e.target.value)}
+                  onKeyDown={handleNewTraitKeyPress}
                 />
                 <Button type="button" onClick={addNewTrait}>
                   Add Trait
