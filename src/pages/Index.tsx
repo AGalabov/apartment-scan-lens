@@ -138,7 +138,7 @@ const Index = () => {
 
   return (
     <div className="container mx-auto p-4 space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center sticky top-0 bg-background z-10 py-4 border-b">
         <h1 className="text-2xl font-bold">Apartment Listings</h1>
         <div className="flex gap-4">
           <Button onClick={handleExport} variant="outline" className="gap-2">

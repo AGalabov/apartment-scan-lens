@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft, Edit2, Save } from "lucide-react";
+import { ChevronLeft, Edit2, Save, ExternalLink } from "lucide-react";
 import { loadListings, saveListings } from "../utils/storage";
 import { TagInput } from "../components/TagInput";
 import { useToast } from "@/components/ui/use-toast";
@@ -85,23 +84,33 @@ const ListingView = () => {
             Back to listings
           </Button>
         </Link>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => {
-            if (isEditing) {
-              handleSave();
-            } else {
-              setIsEditing(true);
-            }
-          }}
-        >
-          {isEditing ? (
-            <Save className="h-4 w-4" />
-          ) : (
-            <Edit2 className="h-4 w-4" />
-          )}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="default"
+            onClick={() => window.open(listing.url, '_blank')}
+            className="gap-2"
+          >
+            <ExternalLink className="h-4 w-4" />
+            Go to listing
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => {
+              if (isEditing) {
+                handleSave();
+              } else {
+                setIsEditing(true);
+              }
+            }}
+          >
+            {isEditing ? (
+              <Save className="h-4 w-4" />
+            ) : (
+              <Edit2 className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
       </div>
 
       <div className="space-y-4">
